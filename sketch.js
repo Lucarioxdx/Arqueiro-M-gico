@@ -78,8 +78,8 @@ function draw () {
     textSize (40);
     text ("Arqueiro Mágico", width / 2, 100);
     textSize (30);
-    text ("Flechas Restantes" + numbersOfArrows, 200, 100);
-    text ("Pontuação" + score, width - 200, 100);
+    text ("Flechas Restantes: " + numbersOfArrows, 200, 100);
+    text ("Pontuação: " + score, width - 200, 100);
 
     if (numbersOfArrows == 0 && gameState === "play") {
         gameState = "end";
@@ -101,4 +101,48 @@ function keyPressed () {
         }
     }
 }
+
+function keyReleased () {
+    if (keyCode === 32) {
+        if (playerArrow.length) {
+            let angle = playerArcher.body.angle;
+            playerArrow [playerArrow.length - 1].shoot (angle);
+        }
+    }
+}
  
+function gameOver () {
+    swal (
+        {
+            title: "Fim de jogo!",
+            text: "Obrigado por jogar. Sua pontuação: " +score,
+            icon: "info",
+            content: {
+                element: "img",
+                attributes: {
+                    src: "https://i.postimg.cc/sxQsBzbt/board-swal.png",
+                    width: 150
+                }
+            },
+
+            button: "Jogar novamente"
+        }
+    ).them (() => {
+        resetGame ();
+    })
+}
+
+function resetGame () {
+    playerArrow = [];
+    score = 0;
+    numbersOfArrows = 10;
+    engine = Engine.create ();
+    world = engine.world;
+    world.gravity.y = 0.3;
+    playerBase = new PlayerBase (300, 500, 180, 150);
+    player = new Player (285, playerBase.body.position.y - 156, 50, 180);
+    playerArcher = new PlayerArcher (340, playerBase.body.position.y - 180, 120, 120);
+    board1 = new Board (width - 300, 330, 50, 200);
+    board2 = new Board (width - 550, height - 300, 50, 200);
+    gameState = "play";
+}
