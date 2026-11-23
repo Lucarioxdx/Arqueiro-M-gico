@@ -83,6 +83,11 @@ function draw () {
 
     if (numbersOfArrows == 0 && gameState === "play") {
         gameState = "end";
+        gameOver ();
+    }
+
+    if (gameState === "end") {
+        return;
     }
 }
 
@@ -127,7 +132,7 @@ function gameOver () {
 
             button: "Jogar novamente"
         }
-    ).them (() => {
+    ).then (() => {
         resetGame ();
     })
 }
